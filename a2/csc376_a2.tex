@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\title{CSC376 - ASSIGNMENT 2}
+\author{Jott Girn and Stephen Le}
+\date{October 2024}
+
+\begin{document}
+ \maketitle 
+Each question is listed below.\\
+\textbf{Question 1}:\\
+All the comments are in the code itself.\\
+\textbf{Question 2}:
+\begin{enumerate}
+    \item Let us go through each joint separely:
+    \begin{itemize}
+        \item \textbf{Joint 1:}\\
+        \begin{align}
+            w_1 &= (0,0,1)\\
+            q_1 &= (0,0,0)\\
+            v_1 &= -w_1 \times q_1 \\
+            &= -(0,0,1) \times (0,0,0)\\
+            &= (0,0,0)
+        \end{align}
+        \item \textbf{Joint 2:}\\
+        \begin{align}
+            w_2 &= (-sin(\theta_1),cos(\theta_1), 0)\\
+            q_2 &= (cos(\theta_1)L_2,sin(\theta_1)L_2, L_1)\\
+            v_2 &= -w_2 \times q_2 \\
+            &= -(sin(\theta_1),-cos(\theta_1), 0) \times (cos(\theta_1)L_2,sin(\theta_1)L_2, L_1)\\
+            &= (-L_1cos(\theta_1), -L_1 sin(\theta_1), L_2)
+        \end{align}
+        \item \textbf{Joint 3:}\\
+        \begin{align}
+            w_3 &= (0,0,0)\\
+            q_3 &= \begin{bmatrix}
+          cos(\theta_1)L_2 + L_3cos(\theta_1)cos(\theta_2)  \\
+           sin(\theta_1)L_2 + L_3sin(\theta_1)cos(\theta_2)\\
+           L_1 - L_3 sin(\theta_2)
+         \end{bmatrix}\\
+            v_3 & = (cos(\theta_1)cos(\theta_2), sin(\theta_1)cos(\theta_2), -sin(\theta_2))
+        \end{align}
+        \item \textbf{Joint 4:}\\
+        \begin{align}
+            q_4 &= \begin{bmatrix}
+              (L_2+(L_3+\theta_3+L_4)cos(\theta_2))cos(\theta_1) \\
+               (L_2+(L_3+\theta_3+L_4)cos(\theta_2))sin(\theta_1)\\
+               L_1-(L_3+\theta_3+L_4)sin(\theta_2)\\
+             \end{bmatrix}\\
+            w_4 &= (-sin(\theta_1),cos(\theta_1),0)
+        \end{align}
+    \end{itemize}
+    Therefore, the jacobian $J$ is:
+    $$J=\begin{bmatrix} w_1 & w_2 & w_3 & w_4 \\
+    v_1 & v_2 & v_3 & v_4 \\
+    \end{bmatrix}$$
+    Plugging everything in, we obtain:
+$$J=\begin{bmatrix} 
+0 &-sin(\theta_1)  & 0 & -sin(\theta_1) \\
+0 & cos(\theta_1)& 0 & cos(\theta_1)\\
+1 & 0& 0 & 0\\
+0 & -L_1cos(\theta_1)& cos(\theta_1)cos(\theta_2) &  (-w_4 \times q_4)[x]\\
+0 & -L_1 sin(\theta_1)& sin(\theta_1)cos(\theta_2) & (-w_4 \times q_4)[y]\\
+0 & L_2&  -sin(\theta_2) & (-w_4 \times q_4)[z]
+
+    \end{bmatrix}$$
+    For joint 4, the $[x],[y],[z]$ refers to the x,y and z components of the cross $q_4 \times w_4$.
+    \item Looking at the ratio of longest and shortest axes, we can see that the ratio will be much greater than 1 due to the longest axis (wy) being so much longer than the other two axes (wx, wz). Given this, we can also see that the condition number of the manipulability ellipsoid will also be much greater than 1. These values imply that the robot in its current configuration cannot rotate much about any axis except the y axis. In addition, these values indicate that  the manipulability ellipsoid is close to collapsing into a singularity. In particular, by looking at the very large ratios of (wy)/(wx) and (wy/wz), this implies that the ellipsoid is close to collapsing into a 1-dimensional singularity that stretches along (wy). This is a state where the robot cannot generate instantaneous angular velocity about any axis other than the y axis i.e. it can only rotate about the y axis. Thus, the robot is close to losing two degrees of freedom in the task space.
+\end{enumerate}
+\end{document}
